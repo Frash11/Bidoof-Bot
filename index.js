@@ -106,7 +106,7 @@ client.on('message',message =>{
                     message.reply(":x: Impossible de kick cet utilisateur !");
                 }else{
                     message.guild.member(memberkick).kick().then((member) => {
-                    message.channel.send(`${member.displayName} a été banni avec succés :green_book: `);
+                    message.channel.send(`${member.displayName} a été kické avec succés :green_book: `);
                 }).catch(() => {
                     message.channel.send(":x: Le kick est innaccessible !")
                 })
