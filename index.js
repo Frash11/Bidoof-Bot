@@ -53,6 +53,9 @@ client.on('message',message =>{
      if(message.content === prefix + "YouTube"){
         message.reply(" Rejoins la chaine YouTube de Simpson Bart ! : https://www.youtube.com/channel/UCD6S1S8zYkxrhV8xucAS16Q")
      }
+ if(message.content === prefix + "invitation"){
+        message.reply(" https://discordapp.com/api/oauth2/authorize?client_id=353296582541705216&permissions=8&scope=bot")
+     }
      
         
    
