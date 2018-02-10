@@ -25,7 +25,7 @@ client.on('ready',() => {
     console.log ("Bot Ready !");
 });
  
-client.login('MzUzMjk2NTgyNTQxNzA1MjE2.DVjPlw.WuEqCa3ZPfB4u8Kgk18-H3bTOg4');
+client.login(process.env.TOKEN);
  
 client.on('message',message =>{
 
@@ -40,7 +40,7 @@ client.on('message',message =>{
         
 
         console.log(userxpdb);
-        var userxp = Object.values(userxpdb)
+        //var userxp = Object.values(userxpdb)
         console.log(userxp)
         console.log(`Nombre d'xp : ${userxp[1]}`)
 
@@ -77,7 +77,7 @@ client.on('message',message =>{
            break;
         
 
-        /*case "randomstory" :
+        case "randomstory" :
 
         story_random();
         console.log(randnum);
@@ -95,7 +95,7 @@ client.on('message',message =>{
 
         if (!message.channel.permissionsFor(message.member).hasPermission("KICK_MEMBERS")){
             message.reply("Tu n'as pas accés a cette commande, il te faut les permissions nécessaires")
-        }else{*/
+        }else{
             var memberkick = message.mentions.users.first();
             console.log(memberkick)
             console.log(message.guild.member(memberkick).kickable)
