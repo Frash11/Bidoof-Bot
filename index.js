@@ -29,7 +29,7 @@ client.login(process.env.TOKEN);
  
 client.on('message',message =>{
 
-    var msgauthor = message.author.id;
+    /*var msgauthor = message.author.id;
 
     if(message.authorbot)return;
 
@@ -40,12 +40,12 @@ client.on('message',message =>{
         
 
         console.log(userxpdb);
-        //var userxp = Object.values(userxpdb)
+        var userxp = Object.values(userxpdb)
         console.log(userxp)
         console.log(`Nombre d'xp : ${userxp[1]}`)
 
         db.get("xp").find({msgauthor}).assign({user: msgauthor, xp: userxp[1]+= 1}).write();
-    }
+    }*/
 
      if(message.content === prefix + "rond"){
          message.reply(" Et bim t'as perdu ! https://cdn.discordapp.com/attachments/310059079831912448/410468832642334722/Z.png")
@@ -77,7 +77,7 @@ client.on('message',message =>{
            break;
         
 
-        case "randomstory" :
+        /*case "randomstory" :
 
         story_random();
         console.log(randnum);
@@ -89,7 +89,7 @@ client.on('message',message =>{
         message.channel.send(`Voici l'histoire: ${story} (Histoire de: ${author_story} )`)
         
 
-        break;
+        break;*/
 
         case "kick":
 
