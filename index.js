@@ -56,7 +56,7 @@ client.on('message',message =>{
  if(message.content === prefix + "invitation"){
         message.reply(" https://discordapp.com/api/oauth2/authorize?client_id=353296582541705216&permissions=8&scope=bot")
      }
-     if(message.content === prefix + "test"){
+  if(message.content === prefix + "test"){
         message.channel.send({embed: {
             color: 3447003,
             author: {
@@ -69,17 +69,19 @@ client.on('message',message =>{
             fields: [{
                     name: 'Les commandes :',
                     value: `-/help : affiche les commandes du bot 
-                     -/YouTube  
-                     -/new story Pour créer une nouvelle histoire !`,
-                     name: 'Modération ( **Réserver Modérateur ou Administrateurs** ):',
-                     value: ` -/mute Pour mute une personne.
-                      -/kick Pour kick une personne.
-                      -/ban Pour bannir une personne.`
+-/YouTube  
+-/new story Pour créer une nouvelle histoire !`,
+                     
                     
-                    }]
+                    },
+                {
+                    name: 'Modération ( **Réserver Modérateur ou Administrateurs** ):',
+                     value: `-/mute Pour mute une personne.
+-/kick Pour kick une personne.
+-/ban Pour bannir une personne.`
+                }]
         }})
      }
-     
         
    
      
