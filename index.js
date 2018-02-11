@@ -56,6 +56,11 @@ client.on('message',message =>{
  if(message.content === prefix + "invitation"){
         message.reply(" https://discordapp.com/api/oauth2/authorize?client_id=353296582541705216&permissions=8&scope=bot")
      }
+     if(message.content === prefix + "test"){
+        message.channel.send({embed: {
+            color: 3447003,
+        }})
+     }
      
         
    
