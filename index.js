@@ -63,8 +63,20 @@ client.on('message',message =>{
                 name: client.user.username,
                 icon_url: client.user.avatarURL
             },
+            titre: `Voici mes commandes !`,
 
-            description: `test :3`
+            description: `test :3`,
+            fields: [{
+                    name: 'Les commandes :',
+                    value: `-/help : affiche les commandes du bot 
+                     -/YouTube  
+                     -/new story Pour créer une nouvelle histoire !`,
+                     name: 'Modération ( **Réserver Modérateur ou Administrateurs** ):',
+                     value: ` -/mute Pour mute une personne.
+                      -/kick Pour kick une personne.
+                      -/ban Pour bannir une personne.`
+                    
+                    }]
         }})
      }
      
