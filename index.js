@@ -59,6 +59,7 @@ client.on('message',message =>{
      if(message.content === prefix + "test"){
         message.channel.send({embed: {
             color: 3447003,
+            description: `test :3`
         }})
      }
      
