@@ -1,3 +1,7 @@
+
+
+
+
 const Discord = require('discord.js')
 const client = new Discord.Client()
 
@@ -5,17 +9,41 @@ const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('database.json')
 const db = low(adapter);
+const boutiqueadapter = new FileSync('boutique.json');
+const boutiquedb = low(boutiqueadapter);
+const setadapter = new FileSync("set.json")
+const setdb = low(setadapter)
 
-db.defaults({histoires: [], xp: []}).write()
+var dispatcher;
 
 
 
 
 
 var prefix = ("/");
+
+var randnum = 1;
+
+var storynumber = db.get('histoires').map('story_value').value();
+
  
 var randnum = 0;
-var storynumber = db.get('histoires').map('story_value').value();
+
+db.defaults({ histoires: [], xp: [], inventaire: []})
+    .write()
+
+ setdb.defaults({setWelcome: []})
+      .write()
+
+
+
+function sendError(message, description) {
+    message.channel.send({embed: {
+       color: 15158332,
+       description: ':x: ' + description
+
+    }});
+}
  
 client.on('ready',() => {
     var  servers = client.guilds.array().map( g => g.name).join(' ');
@@ -25,67 +53,140 @@ client.on('ready',() => {
     console.log ("Bot Ready !");
 });
  
-client.login(process.env.TOKEN);
+client.login('MzUzMjk2NTgyNTQxNzA1MjE2.DWINFA.egU_XnosiCUVXz1DflDzoA8Js1Q');
+
+client.on('guildMemberAdd', member => {
+    member.guild.channels.find('name', 'bienvenu_bye').send(`:green_book: Bonjour, **${member.user.username}** bienvenu sur ce server je t'invite à allez voir le #regle et le #accueil  pour ne pas être perdu, bref passe un bon moment sur le serveur en notre compagnie :wink: !`)
+
+
+})
  
-client.on('message',message =>{
+client.on("guildMemberRemove", member =>{
+    member.guild.channels.find('name', 'bienvenu_bye').send(`:x: **${member.user.username}** a quitté le serveur, reviens vite... :cry:`)
+})
+    
 
-    /*var msgauthor = message.author.id;
+client.on('message', message => {
+                             if(message.content[0] === prefix ) {
+                                 let splitMessage = message.content.split(" ");
+                                 if(splitMessage[0] === '/play') {
+                                      if(splitMessage.length === 2)
+                                       {
+                                         if(message.member.voiceChannel)
+                                       {                       
+                                         message.member.voiceChannel.join().then(connection => {
+                                            dispatcher = connection.playArbitraryInput(splitMessage[1]);
 
-    if(message.authorbot)return;
+                                            dispatcher.on('error', e => {
+                                                console.log(e);
+                                            });
 
-    if(!db.get("xp").find({user: msgauthor}).value()){
-        db.get("xp").push({user: msgauthor, xp: 1}).write();
-    }else{
-        var userxpdb = db.get("xp").filter({user: msgauthor}).find('xp').value();
+                                            dispatcher.on('end', e => {
+                                                dispatcher = undefined;
+                                                console.log('Fin du son !');
+                                            });
+
+                                            }).catch(console.log);
+
+                                        }
+                                         else
+                                         sendError(message, 'Erreur, vous devez vous connectez à a salon vocal !');
+                                    }
+                                    else
+                                    sendError(message, 'Erreur, vous avez mal tapé la commande !  !');
+                                }
+                                else if(splitMessage[0] === '/stop'){
+                                    if( dispatcher !== undefined )
+                                       dispatcher.pause();
+                                }
+                                else if(splitMessage[0] === '/resume'){
+                                    if( dispatcher !== undefined )
+                                       dispatcher.resume();
+                                }
+                                     }
+
+                                  
+                                
+
+    
+    if(message.content === prefix + "YouTube"){
+        message.channel.send(" Rejoins la chaine YouTube de Simpson Bart ! : https://www.youtube.com/channel/UCD6S1S8zYkxrhV8xucAS16Q")
         
-
-        console.log(userxpdb);
-        var userxp = Object.values(userxpdb)
-        console.log(userxp)
-        console.log(`Nombre d'xp : ${userxp[1]}`)
-
-        db.get("xp").find({msgauthor}).assign({user: msgauthor, xp: userxp[1]+= 1}).write();
-    }*/
-
-     if(message.content === prefix + "rond"){
-         message.reply(" Et bim t'as perdu ! https://cdn.discordapp.com/attachments/310059079831912448/410468832642334722/Z.png")
      }
-     if(message.content === prefix + "YouTube"){
-        message.reply(" Rejoins la chaine YouTube de Simpson Bart ! : https://www.youtube.com/channel/UCD6S1S8zYkxrhV8xucAS16Q")
+     
+     if(message.content === prefix + "invitation"){
+        message.channel.send(" Lien pour m'inviter sur votre server : https://bot.discord.io/bidoofbot ")
+   
+
      }
- if(message.content === prefix + "invitation"){
-        message.reply(" https://discordapp.com/api/oauth2/authorize?client_id=353296582541705216&permissions=8&scope=bot")
+     if(message.content === prefix + "myserver"){
+        message.channel.send(" Lien de mon server, ici vous pourrez être a l'actu sur moi !  : https://discord.gg/VVEXymP  ")
+   
+
      }
-  if(message.content === prefix + "test"){
-        message.channel.send({embed: {
+     	
+
+    if (message.content === prefix + "help"){
+        message.reply('Les commandes ont été envoyée en message privé, veuillez lire vos messages privés !')
+        
+        message.author.send({embed: {
             color: 3447003,
             author: {
                 name: client.user.username,
                 icon_url: client.user.avatarURL
             },
-            titre: `Voici mes commandes !`,
+            title: `Voici mes commandes !`,
 
-            description: `test :3`,
+           
             fields: [{
                     name: 'Les commandes :',
-                    value: `-/help : affiche les commandes du bot 
+                    value: `-/help : affiche les commandes du bot
 -/YouTube  
--/new story Pour créer une nouvelle histoire !`,
+-/new story Pour créer une nouvelle histoire !
+-/invitation Lien pour m'inviter sur votre server !
+-/myserver Pour rejoindre mon server et savoir toute l'actualité sur moi !`,
                      
-                    
+                   
                     },
                 {
                     name: 'Modération ( **Réserver Modérateur ou Administrateurs** ):',
                      value: `-/mute Pour mute une personne.
 -/kick Pour kick une personne.
 -/ban Pour bannir une personne.`
-                }]
-        }})
-     }
+                  
+                },
+            {
+            
+                    name: 'Indisponible car co pourrie ! :',
+                    value: `-/play Pour jouer une musique YouTube !
+-/stop Pour stoper la musique !
+-/resume pour relancer la musique ! `
+                
+
+            }],
+                timestamp: new Date(),
+        footer: {
+
+           icon_url: client.user.avatarURL,
+           text : 'Créer par Simpson Bart !',
+        }
+
+       
+
+         
         
-   
-     
-     if (!message.content.startsWith(prefix)) return;
+    }
+});
+    }
+
+    
+        //client.setTimeout(delay: 60000,)
+    
+
+
+    
+
+    if (!message.content.startsWith(prefix)) return;
     var args = message.content.substring(prefix.length).split(" ");
 
         switch (args[0].toLowerCase()){
@@ -99,27 +200,12 @@ client.on('message',message =>{
             
 
             db.get('histoires')
-                .push({ story_value: value, story_author: author})
-                .write()
+                .write({ story_value: value, story_author: author})
+                //.write()
 
            break;
-        
 
-        /*case "randomstory" :
-
-        story_random();
-        console.log(randnum);
-
-        var story = db.get(`histoires[${randnum}].story_value`).toString().value();
-        var author_story = db.get(`histoires[${randnum}].story_author`).toString().value;
-        console.log(story);
-
-        message.channel.send(`Voici l'histoire: ${story} (Histoire de: ${author_story} )`)
-        
-
-        break;*/
-
-        case "kick":
+           case "kick":
 
         if (!message.channel.permissionsFor(message.member).hasPermission("KICK_MEMBERS")){
             message.reply("Tu n'as pas accés a cette commande, il te faut les permissions nécessaires")
@@ -134,7 +220,7 @@ client.on('message',message =>{
                     message.reply(":x: Impossible de kick cet utilisateur !");
                 }else{
                     message.guild.member(memberkick).kick().then((member) => {
-                    message.channel.send(`${member.displayName} a été kické avec succés :green_book: `);
+                    message.channel.send(`${member.displayName} a été banni avec succés :green_book: `);
                 }).catch(() => {
                     message.channel.send(":x: Le kick est innaccessible !")
                 })
@@ -165,58 +251,34 @@ client.on('message',message =>{
             }
         
         break;
-    }
-        
-       
-   
- 
- 
- 
- 
-    if (message.content === prefix + "help"){
-        var help_embed = new Discord.RichEmbed()
-         .setColor('#00FD2A')
-         
-         .addField("Commandes du bot !", " -/help : affiche les commandes du bot \n -/YouTube  \n -/new story Pour créer une nouvelle histoire ! ")
-         .addField("Modération ( Réserver Modérateur ou Administrateurs )"," -/mute \n -/kick Pour kick ( Réserver Modérateur ou Administrateurs ) " )
-         .setFooter("C'est tout pour les commandes !")
-         message.channel.sendEmbed(help_embed);
-        console.log('Commande Help');
-    }
- 
-        if (message.content == "Comment vas-tu Bidoof Bot ?"){
-            random();
- 
-            if (randnum == 3){
-                message.reply("Oui...")
-            }
- 
-            if (randnum == 1){
-                message.reply("Bien et toi ?");
-               
- 
-            }
- 
-            if (randnum == 2){
-                message.reply("Je ne vais pas très bien et toi ?");
-               
- 
-            }
-
+        }
             
- 
-   
-};
+        }
+
+        case "setWelcome":
+
+        
+        
+        var servername = client.guild.name();
+        var serverid = client.guild.id();
+
+        console.log(serverid)
+
+        setdb.get('setWelcome')
+              .push({ server_name: servername, server_id: serverid})
+              .write()
+
+         break;
+
+
+    } 
+
+});
  
 function random (min, max) {
-    min = Math.ceil(0);
-    max = Math.floor (3);
-    randnum = Math.floor(Math.random() * (max - min +1) + min );
-    console.log(randnum);}};
-
-  function story_random (min, max) {
-        min = Math.ceil(1);
-        max = Math.floor(storynumber);
-        randnum = Math.floor(Math.random() * (max - min +1) + min );
-       ;}}})
+  min = Math.ceil(0);
+ max = Math.floor (3);
+randnum = Math.floor(Math.random() * (max - min +1) + min );
+console.log(randnum);}
+            
 
