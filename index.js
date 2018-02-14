@@ -53,7 +53,7 @@ client.on('ready',() => {
     console.log ("Bot Ready !");
 });
  
-client.login('MzUzMjk2NTgyNTQxNzA1MjE2.DWINFA.egU_XnosiCUVXz1DflDzoA8Js1Q');
+client.login(process.env.TOKEN);
 
 client.on('guildMemberAdd', member => {
     member.guild.channels.find('name', 'bienvenu_bye').send(`:green_book: Bonjour, **${member.user.username}** bienvenu sur ce server je t'invite à allez voir le #regle et le #accueil  pour ne pas être perdu, bref passe un bon moment sur le serveur en notre compagnie :wink: !`)
